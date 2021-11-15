@@ -13,7 +13,7 @@ export class ProductService{
     }
 
     getProducts() {
-        return [...this.products];  //TODO consider maping to doubleckeck editing options
+        return [...this.products];  //TODO consider maping to doublecheck editing options
     }
 
    getSingleProduct(productId: string) {
@@ -28,7 +28,7 @@ export class ProductService{
         updatedProduct.title = title;
     }
     if(desc){
-        updatedProduct.desc = desc;//todo validate uptd
+        updatedProduct.desc = desc;
     }
     if(price){
         updatedProduct.price = price;

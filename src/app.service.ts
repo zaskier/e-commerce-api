@@ -6,6 +6,6 @@ export class AppService {
   //   return 'Hello World!';
   // }
   getUsersData(): {name: string} {
-    return {name:'Hello JSON!'};
+    return {name:'Server is active'};
   }
 }
