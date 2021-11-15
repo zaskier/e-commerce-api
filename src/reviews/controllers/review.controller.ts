@@ -10,7 +10,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class ReviewController {
 constructor(private reviewService : ReviewService){}
     @Post()
-    create(@Body()post: ReviewPost): Observable<ReviewPost>{  //todo bettername
+    create(@Body()post: ReviewPost): Observable<ReviewPost>{  
         return this.reviewService.createPost(post)
     }
 
