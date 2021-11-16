@@ -3,6 +3,7 @@
 /node_modules
 /keys
 .env
+/nestjs-dockerized
 
 # Logs
 logs
