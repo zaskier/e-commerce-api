@@ -7,25 +7,24 @@ import { ReviewPost } from '../models/post.interface';
 
 @Injectable()
 export class ReviewService {
-    constructor(
-        @InjectRepository(ReviewPostEntity) 
-        private readonly reviewPostRepository: Repository<ReviewPostEntity>
-    ){}
+  constructor(
+    @InjectRepository(ReviewPostEntity)
+    private readonly reviewPostRepository: Repository<ReviewPostEntity>,
+  ) {}
 
-    createPost(reviewPost: ReviewPost): Observable<ReviewPost>{
-        return from(this.reviewPostRepository.save(reviewPost));
-    }
+  createPost(reviewPost: ReviewPost): Observable<ReviewPost> {
+    return from(this.reviewPostRepository.save(reviewPost));
+  }
 
-    findAllPosts():Observable<ReviewPost[]>{
-        return from(this.reviewPostRepository.find());
-    }
+  findAllPosts(): Observable<ReviewPost[]> {
+    return from(this.reviewPostRepository.find());
+  }
 
-    updateComment(id: number,reviewPost: ReviewPost): Observable<UpdateResult>{
+  updateComment(id: number, reviewPost: ReviewPost): Observable<UpdateResult> {
+    return from(this.reviewPostRepository.update(id, reviewPost));
+  }
 
-        return from(this.reviewPostRepository.update(id, reviewPost));
-    }
-
-    deletePost(id: number) :Observable<DeleteResult>{
-        return from(this.reviewPostRepository.delete(id));
-    }
+  deletePost(id: number): Observable<DeleteResult> {
+    return from(this.reviewPostRepository.delete(id));
+  }
 }

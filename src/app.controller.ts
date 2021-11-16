@@ -6,9 +6,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  @Header('Content-Type','text/x-json')
-  getUsersData(): {} {
-    return this.appService.getUsersData()
-    //return this.appService.getHello();
+  @Header('Content-Type', 'text/x-json')
+  getUsersData():{}{
+    return this.appService.getUsersData();
   }
 }

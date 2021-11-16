@@ -1,5 +1,5 @@
-export interface ReviewPost{
-    id?: number;
-    body?: string;
-    createdAt?: Date;
+export interface ReviewPost {
+  id?: number;
+  body?: string;
+  createdAt?: Date;
 }

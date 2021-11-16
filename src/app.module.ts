@@ -5,24 +5,29 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ProductModule } from './products/product.module';
 import { ReviewModule } from './reviews/review.module';
-
+import { UserController } from './user/controllers/user.controller';
+import { PostUserEntity } from './user/models/post-user.entity';
+import { UserService } from './user/services/user.service.service';
+import { ProductsController } from './products/products.controlers';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({isGlobal:true}),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: "postgres",
+      type: 'postgres',
       host: process.env.POSTGRES_HOST,
       port: parseInt(<string>process.env.POSTGRES_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      autoLoadEntities : true,
-      synchronize : true,
+      autoLoadEntities: true,
+      synchronize: true,
     }),
     ProductModule,
-    ReviewModule],
-  controllers: [AppController],
-  providers: [AppService],
+    ReviewModule,
+    PostUserEntity,
+  ],
+  controllers: [AppController, UserController, ProductsController],
+  providers: [AppService, UserService],
 })
 export class AppModule {}

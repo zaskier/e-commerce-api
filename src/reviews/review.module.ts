@@ -4,12 +4,9 @@ import { ReviewController } from './controllers/review.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewPostEntity } from './models/post.entity';
 
-
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ReviewPostEntity])
-  ],
+  imports: [TypeOrmModule.forFeature([ReviewPostEntity])],
   providers: [ReviewService],
-  controllers: [ReviewController] //todo doublecheck if used
+  controllers: [ReviewController],
 })
 export class ReviewModule {}
