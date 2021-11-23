@@ -15,7 +15,7 @@ export class User extends BaseEntity {
   surname: string
 
   @Column()
-  phoneNumber: number
+  phoneNumber: string
 
   @Column()
   password: string
