@@ -1,5 +1,5 @@
-import { Controller, Get, Header } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Header } from '@nestjs/common'
+import { AppService } from './app.service'
 
 @Controller()
 export class AppController {
@@ -7,7 +7,7 @@ export class AppController {
 
   @Get()
   @Header('Content-Type', 'text/x-json')
-  getUsersData():{}{
-    return this.appService.getUsersData();
+  getUsersData(): {} {
+    return this.appService.getUsersData()
   }
 }

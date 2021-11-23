@@ -1,14 +1,13 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ProductModule } from './products/product.module';
-import { ReviewModule } from './reviews/review.module';
-import { UserController } from './user/controllers/user.controller';
-import { PostUserEntity } from './user/models/post-user.entity';
-import { UserService } from './user/services/user.service.service';
-import { ProductsController } from './products/products.controlers';
+import { Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { ProductModule } from './products/product.module'
+import { ReviewModule } from './reviews/review.module'
+import { ProductsController } from './products/products.controlers'
+import { ProductService } from './products/products.service'
+import { UsersModule } from './users/users.module'
+import { AppController } from './app.controller'
+import { AppService } from './app.service'
 
 @Module({
   imports: [
@@ -25,9 +24,9 @@ import { ProductsController } from './products/products.controlers';
     }),
     ProductModule,
     ReviewModule,
-    PostUserEntity,
+    UsersModule,
   ],
-  controllers: [AppController, UserController, ProductsController],
-  providers: [AppService, UserService],
+  controllers: [AppController, ProductsController],
+  providers: [AppService, ProductService],
 })
 export class AppModule {}
