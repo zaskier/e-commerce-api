@@ -8,28 +8,22 @@ import { DeleteResult, UpdateResult } from 'typeorm'
 export class ReviewController {
   constructor(private reviewService: ReviewService) {}
   @Post()
-  create(@Body() post: ReviewPost): Observable<ReviewPost> {
+  create(@Body() post: ReviewPost) {
     return this.reviewService.createPost(post)
   }
-  // export class ReviewController {
-  //   constructor(private reviewService: ReviewService) {}
-  //   @Post()
-  //   create(@Body() post: ReviewPost) {
-  //     return this.reviewService.createPost(post)
-  //   }
 
   @Get()
-  findAll(): Observable<ReviewPost[]> {
+  findAll() {
     return this.reviewService.findAllPosts()
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() reviewPost: ReviewPost): Observable<UpdateResult> {
+  update(@Param('id') id: number, @Body() reviewPost: ReviewPost) {
     return this.reviewService.updateComment(id, reviewPost)
   }
 
   @Delete(':id')
-  delete(@Param('id') id: number): Observable<DeleteResult> {
+  delete(@Param('id') id: number) {
     return this.reviewService.deletePost(id)
   }
 }

@@ -12,19 +12,19 @@ export class ReviewService {
     private readonly reviewPostRepository: Repository<ReviewPostEntity>,
   ) {}
 
-  createPost(reviewPost: ReviewPost): Observable<ReviewPost> {
+  createPost(reviewPost: ReviewPost) {
     return from(this.reviewPostRepository.save(reviewPost))
   }
 
-  findAllPosts(): Observable<ReviewPost[]> {
+  findAllPosts() {
     return from(this.reviewPostRepository.find())
   }
 
-  updateComment(id: number, reviewPost: ReviewPost): Observable<UpdateResult> {
+  updateComment(id: number, reviewPost: ReviewPost) {
     return from(this.reviewPostRepository.update(id, reviewPost))
   }
 
-  deletePost(id: number): Observable<DeleteResult> {
+  deletePost(id: number) {
     return from(this.reviewPostRepository.delete(id))
   }
 }
