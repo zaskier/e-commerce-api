@@ -8,10 +8,6 @@ export class CreateUserDto {
   email: string
 
   @IsString()
-  @Length(8, 20)
-  password: string
-
-  @IsString()
   @IsNotEmpty()
   name: string
 
@@ -22,4 +18,8 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   phoneNumber: string
+
+  @IsString()
+  @Length(8, 20)
+  password: string
 }
