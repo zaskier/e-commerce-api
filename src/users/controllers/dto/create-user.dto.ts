@@ -20,6 +20,6 @@ export class CreateUserDto {
   phoneNumber: string
 
   @IsString()
-  @Length(8, 20)
+  @Length(8, 32)
   password: string
 }
