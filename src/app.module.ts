@@ -8,6 +8,7 @@ import { ProductService } from './products/products.service'
 import { UsersModule } from './users/users.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
+import { UsersService } from './users/services/users.service'
 
 @Module({
   imports: [
@@ -20,13 +21,13 @@ import { AppService } from './app.service'
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: true, //todo validate with according to cooding standards for production enviorment
     }),
     ProductModule,
     ReviewModule,
     UsersModule,
   ],
   controllers: [AppController, ProductsController],
-  providers: [AppService, ProductService],
+  providers: [AppService, ProductService, UsersService],
 })
 export class AppModule {}
