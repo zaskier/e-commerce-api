@@ -2,17 +2,14 @@ import { Injectable } from '@nestjs/common'
 import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
+import { UserRepository } from '../models/user.repository'
 
 @Injectable()
 export class UsersService {
-  // constructor(
-  //   @InjectRepository(ReviewPostEntity)
-  //   private readonly reviewPostRepository: Repository<ReviewPostEntity>,
-  // ) {}
+  constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
 
-  create(createUserDto: CreateUserDto) {
-    return { status: 'user was created', data: createUserDto }
-    // return from(this.reviewPostRepository.save(reviewPost));
+  async createNewUser(createUserDto: CreateUserDto) {
+    return await this.userRepository.save(createUserDto)
   }
 
   findAll() {
