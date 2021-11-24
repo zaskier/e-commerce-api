@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common'
+import { strictEqual } from 'assert'
 import { UsersService } from 'src/users/services/users.service'
+import { BeforeInsert } from 'typeorm'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+const upperCamelCase = require('uppercamelcase')
 
 @Controller('users')
 export class UsersController {
@@ -9,6 +12,9 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
+    createUserDto.email = createUserDto.email.toLowerCase()
+    createUserDto.name = upperCamelCase(createUserDto.name)
+    createUserDto.surname = upperCamelCase(createUserDto.surname)
     return await this.usersService.createNewUser(createUserDto)
   }
 
