@@ -12,9 +12,6 @@ export class UsersController {
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
-    createUserDto.email = createUserDto.email.toLowerCase()
-    createUserDto.name = upperCamelCase(createUserDto.name)
-    createUserDto.surname = upperCamelCase(createUserDto.surname)
     return await this.usersService.createNewUser(createUserDto)
   }
 
@@ -24,9 +21,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): string {
-    console.log(typeof id)
-    return this.usersService.findOne(+id)
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findOne(id)
   }
 
   @Patch(':id')
