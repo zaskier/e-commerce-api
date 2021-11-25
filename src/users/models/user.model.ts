@@ -11,5 +11,5 @@ export class User {
   name: string
   surname: string
   createdAt?: Date
-  updatedAt?: Date
+  editedAt?: Date
 }
