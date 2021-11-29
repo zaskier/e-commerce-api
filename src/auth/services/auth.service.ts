@@ -5,13 +5,13 @@ import { UsersService } from 'src/users/services/users.service'
 export class AuthService {
   constructor(private usersService: UsersService) {}
 
-  async validateUsers(username: string, password: string): Promise<any> {
-    const user = await this.usersService.logInUser(username)
+  async validateUsers(email: string, password: string): Promise<any> {
+    const user = await this.usersService.logInUser(email)
 
     if (user && user.password === password) {
-      const { password, username, ...rest } = user
+      const { password, email, ...rest } = user
       return user
     }
-    return null //or custom message
+    return null //or message
   } //todowithpassport
 }
