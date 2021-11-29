@@ -8,7 +8,7 @@ import { ProductService } from './products/products.service'
 import { UsersModule } from './users/users.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { UsersService } from './users/services/users.service'
+import { AuthModule } from './auth/auth.module'
 
 @Module({
   imports: [
@@ -26,6 +26,7 @@ import { UsersService } from './users/services/users.service'
     ProductModule,
     ReviewModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController, ProductsController],
   providers: [AppService, ProductService],
