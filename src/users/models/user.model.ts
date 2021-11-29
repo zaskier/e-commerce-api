@@ -4,7 +4,7 @@ export enum RolesEnum {
 }
 
 export class User {
-  id: string
+  id: number
   role: RolesEnum
   email: string
   password: string
