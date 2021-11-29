@@ -1,13 +1,23 @@
-import { Controller, Get, Header } from '@nestjs/common'
+import { Controller, Get, Header, Post, UseGuards, Request } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
 import { AppService } from './app.service'
+import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
+import { LocalAuthGuard } from './auth/guards/local-auth.guard'
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
+  //
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  login(@Request() req): any {
+    return req.user
+  }
 
-  @Get()
+  @UseGuards(AuthenticatedGuard)
+  @Get('protected') //tessting sessions path
   @Header('Content-Type', 'text/x-json')
-  getUsersData(): {} {
-    return this.appService.getUsersData()
+  getUsersData(@Request() req): any {
+    return req.user
   }
 }
