@@ -10,8 +10,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     super() //to remove todo connfig db?
   }
 
-  async validate(username: string, password: string): Promise<any> {
-    const user = await this.authService.validateUsers(username, password)
+  async validate(email: string, password: string): Promise<any> {
+    const user = await this.authService.validateUsers(email, password)
+
     if (!user) {
       throw new UnauthorizedException()
     }
