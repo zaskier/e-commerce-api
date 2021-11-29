@@ -3,34 +3,18 @@ import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserRepository } from '../models/user.repository'
-import { type } from 'os'
-const upperCamelCase = require('uppercamelcase')
+import { User } from '../models/user.model'
 
-export type User = {
-  id: number
-  name: string
-  username: string
-  password: string
-}
+const upperCamelCase = require('uppercamelcase')
 
 @Injectable()
 export class UsersService {
   constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
-  // mocked Users
-  private readonly users: User[] = [
-    {
-      id: 1,
-      name: 'Marius',
-      username: 'Marius7',
-      password: 'pass1',
-    },
-    { id: 2, name: 'Philip', username: 'Phil1', password: 'pass2' },
-  ]
-
-  async logInUser(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username) //createDB object
+  async logInUser(email: string): Promise<User | undefined> {
+    let users = this.userRepository.find()
+    return (await users).find(user => user.email === email) //createDB object
   }
-  //
+
   async createNewUser(createUserDto: CreateUserDto) {
     createUserDto.email = createUserDto.email.toLowerCase()
     createUserDto.name = upperCamelCase(createUserDto.name)
@@ -41,12 +25,6 @@ export class UsersService {
   findAll() {
     return this.userRepository.find()
   }
-
-  // findAdmins() {
-  //   return this.userRepository.find()
-
-  //   return `This action returns all admin users`
-  // }
 
   findOne(id: number) {
     return this.userRepository.findByIds([id])
