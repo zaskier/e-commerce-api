@@ -7,16 +7,14 @@ import { LocalAuthGuard } from './auth/guards/local-auth.guard'
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
-  //
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): any {
-    return req.user
+    return { msg: 'You are logged In' }
   }
 
   @UseGuards(AuthenticatedGuard)
   @Get('protected') //tessting sessions path
-  @Header('Content-Type', 'text/x-json')
   getUsersData(@Request() req): any {
     return req.user
   }
