@@ -8,13 +8,14 @@ export class AuthService {
 
   async validateUsers(email: string, password: string): Promise<any> {
     const user = await this.usersService.logInUser(email)
+    password = await this.usersService.hashPassword(password, user.salt)
 
     if (user && user.password === password) {
       const { password, email, ...rest } = user
       return user
     }
-    return null //or message
-  } //todowithpassport
+    return null
+  }
 
   async login(user: any) {
     const payload = { name: user.name, sub: user.id }
