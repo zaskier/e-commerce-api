@@ -15,6 +15,7 @@ POSTGRES_USER={}
 POSTGRES_PASSWORD={}
 POSTGRES_DATABASE={}
 SECRET=  //for main.ts
+JWT_SECRET= {} // for JWT token
 ```
 
 ## to Build Docker image:
