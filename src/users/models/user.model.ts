@@ -5,11 +5,12 @@ export enum RolesEnum {
 
 export class User {
   id: number
+  name: string
+  surname: string
   role: RolesEnum
   email: string
   password: string
-  name: string
-  surname: string
+  salt: string
   createdAt?: Date
   editedAt?: Date
 }
