@@ -2,6 +2,7 @@ import { Controller, Get, Header, Post, UseGuards, Request } from '@nestjs/commo
 import { AuthGuard } from '@nestjs/passport'
 import { AppService } from './app.service'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard'
 import { LocalAuthGuard } from './auth/guards/local-auth.guard'
 import { AuthService } from './auth/services/auth.service'
 
@@ -15,7 +16,7 @@ export class AppController {
   login(@Request() req): any {
     return this.authService.login(req.user)
   }
-
+  @UseGuards(JwtAuthGuard)
   @Get('protected')
   getUsersData(@Request() req): any {
     return req.user
