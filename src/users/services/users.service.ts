@@ -60,7 +60,8 @@ export class UsersService {
   remove(id: number) {
     return this.userRepository.delete(id)
   }
-  private async hashPassword(password: string, salt: string): Promise<string> {
+  // todo make it wortk private different way or duplicate code
+  async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt)
   }
 }
