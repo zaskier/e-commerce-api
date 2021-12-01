@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common'
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common'
+import * as bcrypt from 'bcrypt'
 import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -19,7 +20,17 @@ export class UsersService {
     createUserDto.email = createUserDto.email.toLowerCase()
     createUserDto.name = upperCamelCase(createUserDto.name)
     createUserDto.surname = upperCamelCase(createUserDto.surname)
-    return await this.userRepository.save(createUserDto)
+    createUserDto.salt = await bcrypt.genSalt()
+    createUserDto.password = await this.hashPassword(createUserDto.password, createUserDto.salt)
+    try {
+      return await this.userRepository.save(createUserDto)
+    } catch (error) {
+      if (error.code === '23505') {
+        return new ConflictException('Email already is assigned to another account')
+      } else {
+        return new InternalServerErrorException()
+      }
+    }
   }
 
   findAll() {
@@ -30,7 +41,7 @@ export class UsersService {
     return this.userRepository.findByIds([id])
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  updateUser(id: number, updateUserDto: UpdateUserDto) {
     if (updateUserDto.email) {
       updateUserDto.email = updateUserDto.email.toLowerCase()
     }
@@ -48,5 +59,8 @@ export class UsersService {
 
   remove(id: number) {
     return this.userRepository.delete(id)
+  }
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt)
   }
 }
