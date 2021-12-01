@@ -24,4 +24,6 @@ export class CreateUserDto {
   @IsString()
   @Length(8, 32)
   password: string
+
+  salt: string
 }

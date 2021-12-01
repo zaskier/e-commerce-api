@@ -1,5 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Index } from 'typeorm'
 import { RolesEnum } from '../models/user.model'
+import * as bcrypt from 'bcrypt'
+
 @Entity('user')
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -21,6 +23,9 @@ export class User extends BaseEntity {
   @Column()
   password: string
 
+  @Column()
+  salt: string
+
   @Column({
     //todo return other enum validation error then 500 and tranform input to lower case
     type: 'enum',
@@ -28,6 +33,11 @@ export class User extends BaseEntity {
     default: RolesEnum.User,
   })
   role: RolesEnum
+  ///todo Use or remove
+  async validatePassword(password: string): Promise<boolean> {
+    const hash = await bcrypt.hash(password, this.salt)
+    return hash === this.password
+  }
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
