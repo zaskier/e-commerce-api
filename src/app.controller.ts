@@ -3,18 +3,20 @@ import { AuthGuard } from '@nestjs/passport'
 import { AppService } from './app.service'
 import { AuthenticatedGuard } from './auth/guards/authenticated.guard'
 import { LocalAuthGuard } from './auth/guards/local-auth.guard'
+import { AuthService } from './auth/services/auth.service'
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly authService: AuthService) {}
+  //constructor(private readonly appService: AppService, authService: AuthService) {}
+
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): any {
-    return { msg: 'You are logged In' }
+    return this.authService.login(req.user)
   }
 
-  @UseGuards(AuthenticatedGuard)
-  @Get('protected') //tessting sessions path
+  @Get('protected')
   getUsersData(@Request() req): any {
     return req.user
   }

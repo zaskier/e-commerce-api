@@ -6,16 +6,6 @@ import * as passport from 'passport'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.use(
-    session({
-      secret: process.env.SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: { maxAge: 3600000 }, //cookie expiring in ms
-    }),
-  )
-  app.use(passport.initialize())
-  app.use(passport.session())
   app.setGlobalPrefix('api')
   app.useGlobalPipes(
     new ValidationPipe({
