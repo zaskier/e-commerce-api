@@ -30,7 +30,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   @IsString()
-  @Length(8, 32)
+  @Length(8, 256)
   password?: string
 
   @IsOptional()

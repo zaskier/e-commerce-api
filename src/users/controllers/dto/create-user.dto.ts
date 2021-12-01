@@ -22,7 +22,7 @@ export class CreateUserDto {
   phoneNumber: string
 
   @IsString()
-  @Length(8, 32)
+  @Length(8, 256)
   password: string
 
   salt: string
