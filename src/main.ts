@@ -6,7 +6,7 @@ import * as passport from 'passport'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.setGlobalPrefix('api')
+  // app.setGlobalPrefix('api') //removed for global logger configuration
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, //todo later set validation for specific Pipes
