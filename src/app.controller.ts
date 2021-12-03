@@ -20,9 +20,4 @@ export class AppController {
   getUsersData(@Request() req): any {
     return req.user
   }
-
-  @Get()
-  getPing(): string {
-    return this.appService.getPing()
-  }
 }
