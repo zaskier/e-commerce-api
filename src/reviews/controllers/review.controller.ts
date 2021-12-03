@@ -6,10 +6,10 @@ import { DeleteResult, UpdateResult } from 'typeorm'
 
 @Controller('review')
 export class ReviewController {
-  constructor(private reviewService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService) {}
   @Post()
-  create(@Body() post: ReviewPost) {
-    return this.reviewService.createPost(post)
+  create(@Body() reviewPost: ReviewPost) {
+    return this.reviewService.create(reviewPost)
   }
 
   @Get()
