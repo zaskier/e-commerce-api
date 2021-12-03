@@ -1,8 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { ReviewPost } from '../models/post.interface'
 import { Observable } from 'rxjs'
 import { ReviewService } from '../services/review.service'
 import { DeleteResult, UpdateResult } from 'typeorm'
+import { ReviewPost } from '../models/post.model'
 
 @Controller('review')
 export class ReviewController {
@@ -18,8 +18,8 @@ export class ReviewController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() reviewPost: ReviewPost) {
-    return this.reviewService.updateComment(id, reviewPost)
+  updateComment(@Param('id') id: number, @Body() reviewPost: ReviewPost) {
+    return this.reviewService.updateComment(+id, reviewPost)
   }
 
   @Delete(':id')

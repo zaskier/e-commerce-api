@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { from, Observable } from 'rxjs'
 import { DeleteResult, Repository, UpdateResult } from 'typeorm'
 import { ReviewPostEntity } from '../models/post.entity'
-import { ReviewPost } from '../models/post.interface'
+import { ReviewPost } from '../models/post.model'
 
 @Injectable()
 export class ReviewService {
@@ -22,7 +22,7 @@ export class ReviewService {
   }
 
   updateComment(id: number, reviewPost: ReviewPost) {
-    return from(this.reviewPostRepository.update(id, reviewPost))
+    return this.reviewPostRepository.update(id, reviewPost)
   }
 
   deletePost(id: number) {
