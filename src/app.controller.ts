@@ -8,8 +8,7 @@ import { AuthService } from './auth/services/auth.service'
 
 @Controller()
 export class AppController {
-  constructor(private readonly authService: AuthService) {}
-  //constructor(private readonly appService: AppService, authService: AuthService) {}
+  constructor(private readonly appService: AppService, private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -20,5 +19,10 @@ export class AppController {
   @Get('protected')
   getUsersData(@Request() req): any {
     return req.user
+  }
+
+  @Get()
+  getPing(): string {
+    return this.appService.getPing()
   }
 }
