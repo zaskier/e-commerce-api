@@ -1,8 +1,10 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 
 @Injectable()
 export class AppService {
-  getUsersData(): { name: string } {
-    return { name: 'Server is active' }
+  logger: Logger
+
+  constructor() {
+    this.logger = new Logger()
   }
 }
