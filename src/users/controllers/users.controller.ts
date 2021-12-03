@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common'
 import { strictEqual } from 'assert'
-import { UsersService } from 'src/users/services/users.service'
+//import { UsersService } from 'src/users/services/users.service'
 import { BeforeInsert } from 'typeorm'
+import { UsersService } from '../services/users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 const upperCamelCase = require('uppercamelcase')
