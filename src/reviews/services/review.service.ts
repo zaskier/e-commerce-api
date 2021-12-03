@@ -12,8 +12,9 @@ export class ReviewService {
     private readonly reviewPostRepository: Repository<ReviewPostEntity>,
   ) {}
 
-  createPost(reviewPost: ReviewPost) {
-    return from(this.reviewPostRepository.save(reviewPost))
+  create(reviewPost: ReviewPost) {
+    const newPost = this.reviewPostRepository.create(reviewPost)
+    return this.reviewPostRepository.save(newPost)
   }
 
   findAllPosts() {
