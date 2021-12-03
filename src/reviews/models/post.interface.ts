@@ -1,5 +1,5 @@
-export interface ReviewPost {
-  id?: number;
-  body?: string;
-  createdAt?: Date;
+export class ReviewPost {
+  id?: number
+  body: string
+  createdAt?: Date
 }
