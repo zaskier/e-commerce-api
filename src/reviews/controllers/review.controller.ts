@@ -1,7 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common'
-import { Observable } from 'rxjs'
 import { ReviewService } from '../services/review.service'
-import { DeleteResult, UpdateResult } from 'typeorm'
 import { ReviewPost } from '../models/post.model'
 
 @Controller('review')
