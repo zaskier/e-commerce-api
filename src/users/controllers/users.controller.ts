@@ -5,6 +5,8 @@ import { BeforeInsert } from 'typeorm'
 import { UsersService } from '../services/users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
+import { ApiCreatedResponse, ApiOkResponse, ApiBody } from '@nestjs/swagger'
+
 const upperCamelCase = require('uppercamelcase')
 
 @Controller('users')
@@ -12,11 +14,15 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiBody({ type: CreateUserDto })
+  // todo @ApiUnauthorizedResponse({ description: 'Unauthorised Access' })
+  @ApiCreatedResponse({ description: 'User Registration' })
   async createUser(@Body() createUserDto: CreateUserDto) {
     return await this.usersService.createNewUser(createUserDto)
   }
 
   @Get()
+  @ApiOkResponse({ description: 'Get all users' })
   findAll() {
     return this.usersService.findAll()
   }
@@ -27,6 +33,7 @@ export class UsersController {
   }
 
   @Patch(':id')
+  @ApiBody({ type: UpdateUserDto })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(+id, updateUserDto)
   }
