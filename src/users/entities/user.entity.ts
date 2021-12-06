@@ -27,7 +27,6 @@ export class User extends BaseEntity {
   salt: string
 
   @Column({
-    //todo return other enum validation error then 500 and tranform input to lower case
     type: 'enum',
     enum: RolesEnum,
     default: RolesEnum.User,

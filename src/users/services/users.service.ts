@@ -4,7 +4,7 @@ import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserRepository } from '../models/user.repository'
-import { User } from '../models/user.model'
+import { RolesEnum, User } from '../models/user.model'
 
 const upperCamelCase = require('uppercamelcase')
 
@@ -25,6 +25,9 @@ export class UsersService {
     try {
       return await this.userRepository.save(createUserDto)
     } catch (error) {
+      if (createUserDto.role != RolesEnum.Admin && createUserDto.role != RolesEnum.User) {
+        return new ConflictException('Possible assigned role for new account can be only "user" or "admin"')
+      }
       if (error.code === '23505') {
         return new ConflictException('Email already is assigned to another account')
       } else {
@@ -60,7 +63,7 @@ export class UsersService {
   remove(id: number) {
     return this.userRepository.delete(id)
   }
-  // todo make it wortk private different way or duplicate code
+  // todo make it wortking private different way or duplicate code
   async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt)
   }
