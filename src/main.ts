@@ -1,8 +1,6 @@
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import * as session from 'express-session'
-import * as passport from 'passport'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 async function bootstrap() {
@@ -10,7 +8,7 @@ async function bootstrap() {
   // app.setGlobalPrefix('api') //removed for global logger configuration
   app.useGlobalPipes(
     new ValidationPipe({
-      transform: true, //todo later set validation for specific Pipes
+      transform: true, //todo later move validation from global to specific Pipes
     }),
   )
   const options = new DocumentBuilder()
