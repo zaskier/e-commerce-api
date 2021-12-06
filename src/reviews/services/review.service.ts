@@ -18,7 +18,8 @@ export class ReviewService {
   }
 
   findAllPosts() {
-    return from(this.reviewPostRepository.find())
+    //  return { data: 'xD' }
+    return this.reviewPostRepository.find()
   }
 
   updateComment(id: number, reviewPost: ReviewPost) {
@@ -26,6 +27,6 @@ export class ReviewService {
   }
 
   deletePost(id: number) {
-    return from(this.reviewPostRepository.delete(id))
+    return this.reviewPostRepository.delete(id)
   }
 }
