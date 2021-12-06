@@ -5,6 +5,6 @@ export class ReviewPost {
   id?: number
   @IsString()
   @ApiProperty({ type: String, description: 'review content' })
-  body: string
+  review: string
   createdAt?: Date
 }

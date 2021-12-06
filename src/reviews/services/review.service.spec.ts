@@ -39,9 +39,9 @@ describe('ReviewService', () => {
   })
 
   it('Should create new review ad return that', async () => {
-    expect(await service.create({ body: 'I can recomend it to everyone for this price' })).toEqual({
+    expect(await service.create({ review: 'I can recomend it to everyone for this price' })).toEqual({
       id: expect.any(Number),
-      body: 'I can recomend it to everyone for this price',
+      review: 'I can recomend it to everyone for this price',
     })
   })
 })

@@ -1,13 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('review-post')
 export class ReviewPostEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number
 
   @Column({ default: '' })
-  body: string;
+  review: string
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt: Date
 }

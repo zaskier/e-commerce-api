@@ -30,7 +30,7 @@ describe('ReviewController', () => {
     controller = module.get<ReviewController>(ReviewController)
   })
 
-  const dtoReviewMocked = { body: 'it is good 7/10' }
+  const dtoReviewMocked = { review: 'it is good 7/10' }
 
   it('should be defined', () => {
     expect(controller).toBeDefined()
@@ -39,7 +39,7 @@ describe('ReviewController', () => {
   it('should create an review', () => {
     expect(controller.create(dtoReviewMocked)).toEqual({
       id: expect.any(Number),
-      body: dtoReviewMocked.body,
+      review: dtoReviewMocked.review,
       //todo add date validation
     })
     expect(mockReviewService.create).toHaveBeenCalledWith(dtoReviewMocked)
