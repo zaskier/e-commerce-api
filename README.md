@@ -1,8 +1,13 @@
 # e-commerce-api
 
-e-commerce service with users and products. It is developed with NestJS, PostgreSQL, Typescript.
-Users can add review curently anonymous in the future they will be able to add them woth relations
-Users can be created.
+e-commerce service with users and products. It is developed with Typescript, NestJS, PostgreSQL, typeORM it is using Docker.
+Documentation for API is created with Swagger.
+
+- Tests are done with Jest and Superstest.
+- Authorisation is done by passwords stored in api DB and authentication is done with JWT.
+- On users endpoint can be performed CRUD operations
+- Users can add review curently anonymous in the future they will be able by ahthorisation and with saced relation to product and user
+- Products are done in test form and for now they are only stored in application memory.
 
 ## Step to be done before deployment
 
@@ -26,11 +31,22 @@ JWT_SECRET= {} // for JWT token
 - docker pull postgres
 - docker run --name postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 - docker-compose up {dev/prod}
-
 ```
 
 ## to run dev/prod enviorment
 
 ```
  - npm run start:{dev/prod}
+```
+
+## to run unit tests
+
+```
+ - npm run test:watch
+```
+
+## to run integration tests
+
+```
+ - npm run test:e2e:watch
 ```
