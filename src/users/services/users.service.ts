@@ -25,13 +25,13 @@ export class UsersService {
     try {
       return await this.userRepository.save(createUserDto)
     } catch (error) {
-      if (createUserDto.role != RolesEnum.Admin && createUserDto.role != RolesEnum.User) {
-        return new ConflictException('Possible assigned role for new account can be only "user" or "admin"')
-      }
+      // if (createUserDto.role != RolesEnum.Admin && createUserDto.role != RolesEnum.User) {
+      //   return new ConflictException('Possible assigned role for new account can be only "user" or "admin"')
+      // }
       if (error.code === '23505') {
-        return new ConflictException('Email already is assigned to another account')
+        throw new ConflictException('User cannot be instatiated')
       } else {
-        return new InternalServerErrorException()
+        throw new InternalServerErrorException()
       }
     }
   }
