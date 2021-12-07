@@ -1,15 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { getRepository } from 'typeorm'
 import { ReviewController } from '../controllers/review.controller'
-import { ReviewPostEntity } from '../models/post.entity'
+import { Review } from '../models/review.entity'
 import { ReviewService } from './review.service'
 
 describe('ReviewService', () => {
   let service: ReviewService
   const mockReviewRepository = {
     create: jest.fn().mockImplementation(dto => dto),
-    save: jest.fn().mockImplementation(ReviewPostEntity => Promise.resolve({ id: Date.now(), ...ReviewPostEntity })),
+    save: jest.fn().mockImplementation(Review => Promise.resolve({ id: Date.now(), ...Review })),
     /* to be implemented and to be added new parameter editedAt and date validation */
     // update: jest.fn().mockImplementation(dto => {
     //   return {
@@ -25,7 +24,7 @@ describe('ReviewService', () => {
       providers: [
         ReviewService,
         {
-          provide: getRepositoryToken(ReviewPostEntity),
+          provide: getRepositoryToken(Review),
           useValue: mockReviewRepository,
         },
       ],

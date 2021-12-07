@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm'
-import { ReviewPostEntity } from './post.entity'
+import { Review } from './review.entity'
 
-@EntityRepository(ReviewPostEntity)
-export class ReviewRepository extends Repository<ReviewPostEntity> {}
+@EntityRepository(Review)
+export class ReviewRepository extends Repository<Review> {}
