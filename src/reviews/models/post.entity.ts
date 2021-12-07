@@ -1,7 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Index, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity('review-post')
+@Entity('review')
 export class ReviewPostEntity {
+  @Index({ unique: true })
   @PrimaryGeneratedColumn()
   id: number
 
@@ -10,4 +11,10 @@ export class ReviewPostEntity {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
+
+  // @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  // editedAt: Date todo Add
+
+  // @Column()
+  // email: string  to do add email of peron posting this request
 }
