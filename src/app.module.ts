@@ -11,8 +11,6 @@ import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { AppLoggerMiddleware } from './utils/logger.middleware'
 
-//import { LoggerMiddleware } from './utils/logger.middleware'
-
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
