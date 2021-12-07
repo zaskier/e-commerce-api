@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { from, Observable } from 'rxjs'
-import { DeleteResult, Repository, UpdateResult } from 'typeorm'
+import { Repository } from 'typeorm'
 import { ReviewPostEntity } from '../models/post.entity'
 import { ReviewPost } from '../models/post.model'
 
@@ -13,13 +12,15 @@ export class ReviewService {
   ) {}
 
   create(reviewPost: ReviewPost) {
-    const newPost = this.reviewPostRepository.create(reviewPost)
-    return this.reviewPostRepository.save(newPost)
+    return this.reviewPostRepository.save(reviewPost)
   }
 
   findAllPosts() {
-    //  return { data: 'xD' }
     return this.reviewPostRepository.find()
+  }
+
+  findOne(id: number) {
+    return this.reviewPostRepository.findByIds([id])
   }
 
   updateComment(id: number, reviewPost: ReviewPost) {
