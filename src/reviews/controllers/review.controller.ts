@@ -30,13 +30,13 @@ export class ReviewController {
   @Put(':id')
   @ApiBody({ type: ReviewPost })
   @UseGuards(JwtAuthGuard)
-  updateComment(@Param('id') id: number, @Body() updateReviewDto: UpdateReviewDto) {
+  updateComment(@Param('id', ParseIntPipe) id: number, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewService.updateComment(+id, updateReviewDto)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  delete(@Param('id') id: number) {
+  delete(@Param('id', ParseIntPipe) id: number) {
     return this.reviewService.deletePost(id)
   }
 }
