@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { ReviewPostEntity } from '../models/post.entity'
-import { ReviewPost } from '../models/post.model'
+import { CreateReviewDto } from '../controllers/dto/create-review.dto'
+import { UpdateReviewDto } from '../controllers/dto/update.review.dto'
+import { Review } from '../models/review.entity'
+import { ReviewPost } from '../models/review.model'
 
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectRepository(ReviewPostEntity)
-    private readonly reviewPostRepository: Repository<ReviewPostEntity>,
+    @InjectRepository(Review)
+    private readonly reviewPostRepository: Repository<Review>,
   ) {}
 
-  create(reviewPost: ReviewPost) {
-    return this.reviewPostRepository.save(reviewPost)
+  create(createReviewDto: CreateReviewDto) {
+    return this.reviewPostRepository.save(createReviewDto)
   }
 
   findAllPosts() {
@@ -23,8 +25,9 @@ export class ReviewService {
     return this.reviewPostRepository.findByIds([id])
   }
 
-  updateComment(id: number, reviewPost: ReviewPost) {
-    return this.reviewPostRepository.update(id, reviewPost)
+  updateComment(id: number, updateReviewDto: UpdateReviewDto) {
+    updateReviewDto.editedAt = new Date()
+    return this.reviewPostRepository.update(id, updateReviewDto)
   }
 
   deletePost(id: number) {
