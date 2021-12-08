@@ -32,11 +32,6 @@ export class User extends BaseEntity {
     default: RolesEnum.User,
   })
   role: RolesEnum
-  ///todo Use or remove
-  async validatePassword(password: string): Promise<boolean> {
-    const hash = await bcrypt.hash(password, this.salt)
-    return hash === this.password
-  }
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date
