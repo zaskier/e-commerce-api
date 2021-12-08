@@ -1,8 +1,19 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ParseIntPipe, UseGuards } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  ParseIntPipe,
+  UseGuards,
+  UnauthorizedException,
+} from '@nestjs/common'
 import { ReviewService } from '../services/review.service'
 import { ReviewPost } from '../models/review.model'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
-import { ApiBody, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger'
 import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateReviewDto } from './dto/update.review.dto'
 
@@ -13,6 +24,7 @@ export class ReviewController {
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBody({ type: ReviewPost })
+  @ApiUnauthorizedResponse({ type: UnauthorizedException })
   create(@Body() createReviewDto: CreateReviewDto) {
     return this.reviewService.create(createReviewDto)
   }
@@ -28,14 +40,16 @@ export class ReviewController {
   }
 
   @Put(':id')
-  @ApiBody({ type: ReviewPost })
   @UseGuards(JwtAuthGuard)
+  @ApiBody({ type: ReviewPost })
+  @ApiUnauthorizedResponse({ type: UnauthorizedException })
   updateComment(@Param('id', ParseIntPipe) id: number, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewService.updateComment(+id, updateReviewDto)
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiUnauthorizedResponse({ type: UnauthorizedException })
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.reviewService.deletePost(id)
   }
