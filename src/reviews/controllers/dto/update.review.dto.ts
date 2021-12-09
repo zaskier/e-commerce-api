@@ -10,7 +10,12 @@ export class UpdateReviewDto {
   @IsNotEmpty()
   @Min(1)
   @Max(5)
-  @ApiProperty({ type: String, description: 'rating from 1 to 5 stars' })
+  @ApiProperty({
+    type: Number,
+    description: 'rating from 1 to 5 stars',
+    minimum: 1,
+    maximum: 5,
+  })
   rating?: number
   @IsOptional()
   editedAt?: Date
