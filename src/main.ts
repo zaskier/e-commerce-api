@@ -15,7 +15,7 @@ async function bootstrap() {
     .setTitle('E-commerce API')
 
     .setDescription(
-      'e-commerce API with users, reviews and products. It is using authorisation on /login to Authorize using access token',
+      'e-commerce API with users, reviews and products. It is using authorisation on /login to authenticate user by access token',
     )
 
     .setVersion('1.0.0')
