@@ -4,7 +4,7 @@ import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserRepository } from '../models/user.repository'
-import { RolesEnum, User } from '../models/user.model'
+import { User } from '../models/user.model'
 
 const upperCamelCase = require('uppercamelcase')
 
@@ -66,5 +66,6 @@ export class UsersService {
   // todo make it wortking private different way or duplicate code
   async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt)
+    //return bcrypt.hash(password, salt)
   }
 }
