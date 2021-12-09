@@ -5,7 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  // app.setGlobalPrefix('api') //removed for global logger configuration
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, //todo later move validation from global to specific Pipes
@@ -15,9 +14,20 @@ async function bootstrap() {
 
     .setTitle('E-commerce API')
 
-    .setDescription('e-commerce API')
+    .setDescription(
+      'e-commerce API with users, reviews and products. It is using authorisation on /login to Authorize using access token',
+    )
 
     .setVersion('1.0.0')
+
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'Token',
+      },
+      'access-token',
+    )
 
     .build()
 
