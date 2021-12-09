@@ -36,6 +36,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsString()
   @ApiProperty({
     type: String,
+    enum: ['admin', 'user'],
     description: 'role it can be admin or user',
   })
   role?: RolesEnum
