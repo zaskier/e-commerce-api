@@ -1,10 +1,21 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param } from '@nestjs/common'
+import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, UnauthorizedException } from '@nestjs/common'
 import { ProductService } from './products.service'
-
+import { ApiUnauthorizedResponse, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 @Controller('products')
+@ApiTags('products')
 export class ProductsController {
   constructor(private readonly productService: ProductService) {}
   @Post()
+  @UseGuards(JwtAuthAdminGuard)
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+    description: 'lacks valid authentication credentials for the requested resource',
+  })
+  @ApiResponse({
+    status: 403,
+    description: `Forbidden: How do you fix you don't have permission to access this resource?`,
+  })
   addProduct(
     @Body('title') prodTitle: string,
     @Body('description') prodDescription: string,
@@ -22,6 +33,16 @@ export class ProductsController {
     return this.productService.getSingleProduct(prodId)
   }
   @Patch(':id')
+  @UseGuards(JwtAuthAdminGuard)
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+    description: 'lacks valid authentication credentials for the requested resource',
+  })
+  @ApiResponse({
+    status: 403,
+    description: `Forbidden: How do you fix you don't have permission to access this resource?`,
+  })
+  // @ApiBody({ type: ReviewPost }) //todoadd
   updateProduct(
     @Param('id') prodId: string,
     @Body('title') prodTitle: string,
@@ -33,6 +54,15 @@ export class ProductsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthAdminGuard)
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+    description: 'lacks valid authentication credentials for the requested resource',
+  })
+  @ApiResponse({
+    status: 403,
+    description: `Forbidden: How do you fix you don't have permission to access this resource?`,
+  })
   removeProduct(@Param('id') prodId: string) {
     this.productService.deleteProduct(prodId)
     return { message: 'item was removed' }

@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   UseGuards,
   UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common'
 import { UsersService } from '../services/users.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -20,8 +21,10 @@ import {
   ApiBody,
   ApiTags,
   ApiUnauthorizedResponse,
+  ApiResponse,
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
+import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 
 @Controller('users')
 @ApiTags('users')
@@ -67,10 +70,15 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthAdminGuard)
   @ApiOkResponse({ description: 'User was user deleted' })
   @ApiUnauthorizedResponse({
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
+  })
+  @ApiResponse({
+    status: 403,
+    description: `Forbidden: How do you fix you don't have permission to access this resource?`,
   })
   remove(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.remove(+id)
