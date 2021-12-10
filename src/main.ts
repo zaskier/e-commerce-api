@@ -15,7 +15,7 @@ async function bootstrap() {
     .setTitle('E-commerce API')
 
     .setDescription(
-      'e-commerce API with users, reviews and products. It is using authorisation on /login to authenticate user by access token',
+      'e-commerce API with users, reviews and products. It is using authorisation on /login to authenticate user by access token, some endpoint are only accessible for users with role "admin" on those road there is 403 status thrown',
     )
 
     .setVersion('1.0.0')
