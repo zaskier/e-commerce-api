@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Request, UseGuards, UnauthorizedException } from '@nestjs/common'
+import { Controller, Get, Post, Body, Request, UseGuards, UnauthorizedException, HttpCode } from '@nestjs/common'
 
 import { ApiUnauthorizedResponse, ApiOkResponse, ApiBody, ApiTags } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
+import { JwtAuthAdminGuard } from '../guards/jwt-auth-admin.guard'
 import { LocalAuthGuard } from '../guards/local-auth.guard'
 import { AuthService } from '../services/auth.service'
 import { AuthoriseUserDto } from './dto/authorise-user.dto'
@@ -11,6 +12,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
+  @HttpCode(200)
   @Post('login')
   @ApiOkResponse({ description: 'User Authentication' })
   @ApiUnauthorizedResponse({
@@ -18,14 +20,13 @@ export class AuthController {
     description: 'lacks valid authentication credentials for the requested resource',
   })
   @ApiBody({ type: AuthoriseUserDto })
-  login(@Request() req, @Body('username') username: string, @Body('password') password: string): any {
-    return this.authService.login(username, password, req.user)
+  login(@Request() req, @Body('username') username: string): any {
+    return this.authService.login(username, req.user)
   }
-
   @UseGuards(JwtAuthGuard)
   @Get('protected')
   @ApiOkResponse({ description: 'User Authorisation' })
   getUsersData(@Request() req): any {
-    return req.user
+    return { message: `You are logged in as ${req.user.name}` }
   }
 }
