@@ -57,6 +57,4 @@ export class CreateUserDto {
     description: 'password',
   })
   password: string
-
-  salt: string
 }

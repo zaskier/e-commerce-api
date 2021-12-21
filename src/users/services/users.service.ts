@@ -20,14 +20,13 @@ export class UsersService {
     createUserDto.email = createUserDto.email.toLowerCase()
     createUserDto.name = upperCamelCase(createUserDto.name)
     createUserDto.surname = upperCamelCase(createUserDto.surname)
-    createUserDto.salt = await bcrypt.genSalt()
-    createUserDto.password = await this.hashPassword(createUserDto.password, createUserDto.salt)
+    let userSalt: string = await bcrypt.genSalt(12)
+    console.log(userSalt)
+    createUserDto.password = await this.hashPassword(createUserDto.password, userSalt)
+
     try {
       return await this.userRepository.save(createUserDto)
     } catch (error) {
-      // if (createUserDto.role != RolesEnum.Admin && createUserDto.role != RolesEnum.User) {
-      //   return new ConflictException('Possible assigned role for new account can be only "user" or "admin"')
-      // }
       if (error.code === '23505') {
         throw new ConflictException('User cannot be instatiated')
       } else {
