@@ -10,9 +10,6 @@ export class AuthService {
     const user = await this.usersService.logInUser(email)
 
     const saltRegex = /(\$)([A-Za-z0-9.]){2}(\$)([0-9]){2}(\$)(.){22}/g
-    console.log(String(user.password))
-
-    console.log(String(user.password.match(saltRegex))) //xD
 
     password = await this.usersService.hashPassword(password, String(user.password.match(saltRegex)))
     if (user && user.password === password) {
