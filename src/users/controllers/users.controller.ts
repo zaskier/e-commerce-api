@@ -9,7 +9,13 @@ import {
   ParseIntPipe,
   UseGuards,
   UnauthorizedException,
+  Headers,
+  HttpStatus,
   ForbiddenException,
+  ConflictException,
+  InternalServerErrorException,
+  Logger,
+  HttpException,
 } from '@nestjs/common'
 import { UsersService } from '../services/users.service'
 import { CreateUserDto } from './dto/create-user.dto'
@@ -31,6 +37,8 @@ import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class UsersController {
+  private logger = new Logger('UsersController')
+
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
@@ -41,7 +49,21 @@ export class UsersController {
     description: 'lacks valid authentication credentials for the requested resource',
   })
   async createUser(@Body() createUserDto: CreateUserDto) {
-    return await this.usersService.createNewUser(createUserDto)
+    return new Promise<any>((resolve, reject) => {
+      this.usersService.createNewUser(createUserDto).catch(error => {
+        delete createUserDto['password']
+        if (error.code === '23505') {
+          this.logger.warn(`User cannot be instatiated, there is user conflict'${JSON.stringify(createUserDto)}`)
+          reject(new ConflictException('User cannot be instatiated, there is user conflict'))
+        } else {
+          this.logger.warn(`new user was not created ${JSON.stringify(createUserDto)}`)
+          reject(new ConflictException())
+        }
+      })
+      delete createUserDto['password']
+      this.logger.warn(`user was created ${JSON.stringify(createUserDto)}`)
+      resolve({ status: 'user was created', data: createUserDto })
+    })
   }
 
   @Get()
@@ -66,7 +88,20 @@ export class UsersController {
     description: 'lacks valid authentication credentials for the requested resource',
   })
   update(@Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(+id, updateUserDto)
+    return new Promise<any>((resolve, reject) => {
+      this.usersService.updateUser(+id, updateUserDto).catch(error => {
+        if (updateUserDto.password) {
+          updateUserDto.password = ''
+        }
+        this.logger.warn(`user with id: ${id} was not updated ${JSON.stringify(updateUserDto)}`)
+        reject(new ConflictException())
+      })
+      if (updateUserDto.password) {
+        delete updateUserDto['password']
+      }
+      this.logger.warn(`user with id: ${id} was updated ${JSON.stringify(updateUserDto)}`)
+      resolve({ status: 'user was updated', data: updateUserDto })
+    })
   }
 
   @Delete(':id')
