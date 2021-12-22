@@ -8,7 +8,6 @@ export class JwtAuthAdminGuard extends AuthGuard('jwt') {
   }
 
   handleRequest(err, user, info) {
-    console.log(user)
     // You can throw an exception based on either "info" or "err" arguments
     if (err || !user || user.role != 'admin') {
       throw err || new HttpException('Forbidden', HttpStatus.FORBIDDEN)
