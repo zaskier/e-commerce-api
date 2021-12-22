@@ -1,10 +1,19 @@
-import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common'
+import {
+  ConflictException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UserRepository } from '../models/user.repository'
 import { User } from '../models/user.model'
+import { AppLoggerMiddleware } from 'src/utils/logger.middleware'
+import { AppService } from 'src/app.service'
 
 const upperCamelCase = require('uppercamelcase')
 
@@ -13,7 +22,7 @@ export class UsersService {
   constructor(@InjectRepository(UserRepository) private userRepository: UserRepository) {}
   async logInUser(email: string): Promise<User | undefined> {
     let users = this.userRepository.find()
-    return (await users).find(user => user.email === email) //createDB object
+    return (await users).find(user => user.email === email)
   }
 
   async createNewUser(createUserDto: CreateUserDto) {
@@ -21,18 +30,8 @@ export class UsersService {
     createUserDto.name = upperCamelCase(createUserDto.name)
     createUserDto.surname = upperCamelCase(createUserDto.surname)
     let userSalt: string = await bcrypt.genSalt(12)
-    console.log(userSalt)
     createUserDto.password = await this.hashPassword(createUserDto.password, userSalt)
-
-    try {
-      return await this.userRepository.save(createUserDto)
-    } catch (error) {
-      if (error.code === '23505') {
-        throw new ConflictException('User cannot be instatiated')
-      } else {
-        throw new InternalServerErrorException()
-      }
-    }
+    return await this.userRepository.save(createUserDto)
   }
 
   findAll() {
@@ -40,10 +39,13 @@ export class UsersService {
   }
 
   findOne(id: number) {
-    return this.userRepository.findByIds([id])
+    let findUser = this.userRepository.findByIds([id])
+    delete findUser['password']
+    return findUser
+    //return this.userRepository.findByIds([id])
   }
 
-  updateUser(id: number, updateUserDto: UpdateUserDto) {
+  async updateUser(id: number, updateUserDto: UpdateUserDto) {
     if (updateUserDto.email) {
       updateUserDto.email = updateUserDto.email.toLowerCase()
     }
@@ -52,6 +54,10 @@ export class UsersService {
     }
     if (updateUserDto.surname) {
       updateUserDto.surname = upperCamelCase(updateUserDto.surname)
+    }
+    if (updateUserDto.password) {
+      let userSalt: string = await bcrypt.genSalt(12)
+      updateUserDto.password = await this.hashPassword(updateUserDto.password, userSalt)
     }
 
     let updateEditedAt: Date = new Date()
@@ -62,9 +68,7 @@ export class UsersService {
   remove(id: number) {
     return this.userRepository.delete(id)
   }
-  // todo make it wortking private different way or duplicate code
   async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt)
-    //return bcrypt.hash(password, salt)
   }
 }
