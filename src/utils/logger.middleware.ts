@@ -16,6 +16,9 @@ export class AppLoggerMiddleware implements NestMiddleware {
 
       this.logger.log(`${method} ${url} ${statusCode} ${contentLength} - ${userAgent} ${ip}`)
     })
+    // if (method !== 'GET') {
+    //   this.logger.error(request.body)
+    // }//for adding body to requerst other than get(now password are in body request)
 
     next()
   }
