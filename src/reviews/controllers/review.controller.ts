@@ -10,6 +10,8 @@ import {
   UseGuards,
   UnauthorizedException,
   Headers,
+  ConflictException,
+  Logger,
 } from '@nestjs/common'
 import { ReviewService } from '../services/review.service'
 import { ReviewPost } from '../models/review.model'
@@ -29,7 +31,7 @@ import { UpdateReviewDto } from './dto/update.review.dto'
 @ApiTags('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
-
+  private logger = new Logger('ReviewController')
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBody({ type: CreateReviewDto })
@@ -40,7 +42,16 @@ export class ReviewController {
   })
   @ApiCreatedResponse({ description: 'Review was posted' })
   create(@Headers('Authorization') jwtPayload: string, @Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.create(createReviewDto, jwtPayload)
+    return new Promise<any>((resolve, reject) => {
+      this.reviewService
+        .create(createReviewDto, jwtPayload)
+        .then(review => {
+          resolve(review)
+        })
+        .catch(error => {
+          reject(new ConflictException(`Review cannot be added, error: ${JSON.stringify(error)}`))
+        })
+    })
   }
 
   @Get()
@@ -51,8 +62,17 @@ export class ReviewController {
 
   @Get(':id')
   @ApiOkResponse({ description: 'Review is displayed' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.reviewService.findOne(id)
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return new Promise<any>(async (resolve, reject) => {
+      this.reviewService
+        .findOne(id)
+        .then(review => {
+          resolve(review)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 
   @Put(':id')

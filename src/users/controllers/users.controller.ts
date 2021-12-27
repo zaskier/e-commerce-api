@@ -17,6 +17,7 @@ import {
   Logger,
   HttpException,
 } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
 import { UsersService } from '../services/users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -31,6 +32,7 @@ import {
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
+import { User } from '../entities/user.entity'
 
 @Controller('users')
 @ApiTags('users')
@@ -50,19 +52,23 @@ export class UsersController {
   })
   async createUser(@Body() createUserDto: CreateUserDto) {
     return new Promise<any>((resolve, reject) => {
-      this.usersService.createNewUser(createUserDto).catch(error => {
-        delete createUserDto['password']
-        if (error.code === '23505') {
-          this.logger.warn(`User cannot be instatiated, there is user conflict'${JSON.stringify(createUserDto)}`)
-          reject(new ConflictException('User cannot be instatiated, there is user conflict'))
-        } else {
-          this.logger.warn(`new user was not created ${JSON.stringify(createUserDto)}`)
-          reject(new ConflictException())
-        }
-      })
-      delete createUserDto['password']
-      this.logger.warn(`user was created ${JSON.stringify(createUserDto)}`)
-      resolve({ status: 'user was created', data: createUserDto })
+      this.usersService
+        .createNewUser(createUserDto)
+        .then(user => {
+          delete createUserDto['password']
+          resolve(user)
+        })
+        .catch(error => {
+          delete createUserDto['password']
+          if (error.code === '23505') {
+            this.logger.warn(
+              `User cannot be instatiated, there is user email adress conflict'${JSON.stringify(createUserDto)}`,
+            )
+            reject(new ConflictException('User cannot be instatiated, there is user email adress conflict'))
+          } else {
+            reject(`User cannot be instatiated, ${JSON.stringify(createUserDto)}, error: ${JSON.stringify(error)}`)
+          }
+        })
     })
   }
 
@@ -70,14 +76,23 @@ export class UsersController {
   @ApiOkResponse({ description: 'All users were listed' })
   @ApiUnauthorizedResponse({ type: UnauthorizedException })
   findAll() {
-    return this.usersService.findAll()
+    return this.usersService.findAllUsers()
   }
 
   @Get(':id')
   @ApiUnauthorizedResponse({ type: UnauthorizedException })
   @ApiOkResponse({ description: 'User was found' })
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.usersService.findOne(id)
+  findOne(@Param('id', ParseIntPipe) id: number): Promise<any> {
+    return new Promise<any>(async (resolve, reject) => {
+      this.usersService
+        .findOneUser(id)
+        .then(user => {
+          resolve(user)
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 
   @Patch(':id')
@@ -115,7 +130,7 @@ export class UsersController {
     status: 403,
     description: `Forbidden: How do you fix you don't have permission to access this resource?`,
   })
-  remove(@Param('id', ParseIntPipe) id: string) {
-    return this.usersService.remove(+id)
+  remove(@Param('id', ParseIntPipe) id: string, @Headers('Authorization') jwtPayload: string) {
+    return this.usersService.deleteUser(+id, jwtPayload)
   }
 }
