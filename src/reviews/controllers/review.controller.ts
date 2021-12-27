@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   UseGuards,
   UnauthorizedException,
+  Headers,
 } from '@nestjs/common'
 import { ReviewService } from '../services/review.service'
 import { ReviewPost } from '../models/review.model'
@@ -28,6 +29,7 @@ import { UpdateReviewDto } from './dto/update.review.dto'
 @ApiTags('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
+
   @Post()
   @UseGuards(JwtAuthGuard)
   @ApiBody({ type: CreateReviewDto })
@@ -37,8 +39,8 @@ export class ReviewController {
     description: 'lacks valid authentication credentials for the requested resource',
   })
   @ApiCreatedResponse({ description: 'Review was posted' })
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.create(createReviewDto)
+  create(@Headers('Authorization') jwtPayload: string, @Body() createReviewDto: CreateReviewDto) {
+    return this.reviewService.create(createReviewDto, jwtPayload)
   }
 
   @Get()
@@ -62,8 +64,12 @@ export class ReviewController {
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
   })
-  updateComment(@Param('id', ParseIntPipe) id: number, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewService.updateComment(+id, updateReviewDto)
+  async updateComment(
+    @Param('id', ParseIntPipe) id: number,
+    @Headers('Authorization') jwtPayload: string,
+    @Body() updateReviewDto: UpdateReviewDto,
+  ) {
+    return this.reviewService.updateComment(+id, jwtPayload, updateReviewDto)
   }
 
   @Delete(':id')
@@ -73,7 +79,7 @@ export class ReviewController {
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
   })
-  delete(@Param('id', ParseIntPipe) id: number) {
-    return this.reviewService.deletePost(id)
+  delete(@Param('id', ParseIntPipe) id: number, @Headers('Authorization') jwtPayload: string) {
+    return this.reviewService.deletePost(id, jwtPayload)
   }
 }
