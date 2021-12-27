@@ -18,6 +18,6 @@ export class Review extends BaseEntity {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   editedAt: Date
 
-  // @Column()
-  // email: string  //to do add email of peron posting this request
+  @Column()
+  email: string
 }

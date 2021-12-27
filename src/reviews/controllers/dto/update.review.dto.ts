@@ -19,5 +19,5 @@ export class UpdateReviewDto {
   rating?: number
   @IsOptional()
   editedAt?: Date
-  //email?: string todo add with User/Admin authGuard
+  email?: string
 }

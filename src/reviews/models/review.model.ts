@@ -1,4 +1,4 @@
-import { Max, Min, IsInt, IsString, IsNotEmpty } from 'class-validator'
+import { Max, Min, IsInt, IsString, IsNotEmpty, IsEmail } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 
 export class ReviewPost {
@@ -15,5 +15,6 @@ export class ReviewPost {
   rating: number
   createdAt?: Date
   editedAt?: Date
-  email?: string
+  @IsEmail()
+  email: string
 }

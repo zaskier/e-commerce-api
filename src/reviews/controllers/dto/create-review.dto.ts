@@ -12,5 +12,5 @@ export class CreateReviewDto {
   @Max(5)
   @ApiProperty({ type: String, description: 'rating from 1 to 5 stars' })
   rating: number
-  //email?: string
+  email: string
 }
