@@ -70,7 +70,7 @@ export class ReviewController {
           resolve(review)
         })
         .catch(err => {
-          reject(err)
+          reject(new ConflictException(`Review cannot be displayed, error: ${JSON.stringify(err)}`))
         })
     })
   }
