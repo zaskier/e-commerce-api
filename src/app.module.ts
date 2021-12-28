@@ -1,15 +1,15 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { ProductModule } from './products/product.module'
 import { ReviewModule } from './reviews/review.module'
-import { ProductsController } from './products/products.controlers'
-import { ProductService } from './products/products.service'
 import { UsersModule } from './users/users.module'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthModule } from './auth/auth.module'
 import { AppLoggerMiddleware } from './utils/logger.middleware'
+import { ProductsController } from './products/controllers/products.controlers'
+import { ProductService } from './products/services/products.service'
+import { ProductModule } from './products/product.module'
 
 @Module({
   imports: [
@@ -29,8 +29,8 @@ import { AppLoggerMiddleware } from './utils/logger.middleware'
     UsersModule,
     AuthModule,
   ],
-  controllers: [AppController, ProductsController],
-  providers: [AppService, ProductService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

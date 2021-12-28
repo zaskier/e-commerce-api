@@ -5,9 +5,8 @@ Documentation for API is created with Swagger.
 
 - Tests are done with Jest and Superstest.
 - Authorisation is done by passwords stored in api DB and authentication is done with JWT.
-- On users endpoint can be performed CRUD operations
-- Users can add review curently anonymous in the future they will be able by ahthorisation and with saced relation to product and user
-- Products are done in test form and for now they are only stored in application memory.
+- On: users,product,review endpoints can be performed CRUD operations
+- Users can add review, admins can add new products(according to swagger documentation)
 
 ## Step to be done before deployment
 
