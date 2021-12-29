@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common'
+import { ConflictException, Injectable, Logger } from '@nestjs/common'
 import * as bcrypt from 'bcrypt'
 import { CreateUserDto } from '../controllers/dto/create-user.dto'
 import { UpdateUserDto } from '../controllers/dto/update-user.dto'
@@ -57,23 +57,30 @@ export class UsersService {
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto) {
-    if (updateUserDto.email) {
-      updateUserDto.email = updateUserDto.email.toLowerCase()
-    }
-    if (updateUserDto.name) {
-      updateUserDto.name = upperCamelCase(updateUserDto.name)
-    }
-    if (updateUserDto.surname) {
-      updateUserDto.surname = upperCamelCase(updateUserDto.surname)
-    }
-    if (updateUserDto.password) {
-      let userSalt: string = await bcrypt.genSalt(12)
-      updateUserDto.password = await this.hashPassword(updateUserDto.password, userSalt)
-    }
-
-    let updateEditedAt: Date = new Date()
-    updateUserDto.editedAt = updateEditedAt
-    return this.userRepository.update(id, updateUserDto)
+    return new Promise<any>(async (resolve, reject) => {
+      if (updateUserDto.email) {
+        updateUserDto.email = updateUserDto.email.toLowerCase()
+      }
+      if (updateUserDto.name) {
+        updateUserDto.name = upperCamelCase(updateUserDto.name)
+      }
+      if (updateUserDto.surname) {
+        updateUserDto.surname = upperCamelCase(updateUserDto.surname)
+      }
+      if (updateUserDto.password) {
+        let userSalt: string = await bcrypt.genSalt(12)
+        updateUserDto.password = await this.hashPassword(updateUserDto.password, userSalt)
+      }
+      let updateEditedAt: Date = new Date()
+      updateUserDto.editedAt = updateEditedAt
+      this.userRepository.findOne(id).then(value => {
+        if (typeof value == 'undefined') {
+          reject(new ConflictException(`User id : ${id} does not exist`))
+        } else {
+          resolve(this.userRepository.update(id, updateUserDto))
+        }
+      })
+    })
   }
 
   deleteUser(id: number, jwtPayload: string) {

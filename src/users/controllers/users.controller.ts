@@ -104,18 +104,20 @@ export class UsersController {
   })
   update(@Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
     return new Promise<any>((resolve, reject) => {
-      this.usersService.updateUser(+id, updateUserDto).catch(error => {
-        if (updateUserDto.password) {
-          updateUserDto.password = ''
-        }
-        this.logger.warn(`user with id: ${id} was not updated ${JSON.stringify(updateUserDto)}`)
-        reject(new ConflictException())
-      })
-      if (updateUserDto.password) {
-        delete updateUserDto['password']
-      }
-      this.logger.warn(`user with id: ${id} was updated ${JSON.stringify(updateUserDto)}`)
-      resolve({ status: 'user was updated', data: updateUserDto })
+      this.usersService
+        .updateUser(+id, updateUserDto)
+        .then(user => {
+          if (user.password) {
+            delete user['password']
+          }
+          resolve(user)
+        })
+        .catch(error => {
+          if (updateUserDto.password) {
+            updateUserDto.password = ''
+          }
+          reject(new ConflictException(`User cannot be updated, error: ${JSON.stringify(error)}`))
+        })
     })
   }
 
