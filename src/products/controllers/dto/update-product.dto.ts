@@ -1,22 +1,23 @@
-import { IsInt, Min, Max, IsString, IsNotEmpty, Length, IsIn } from 'class-validator'
+import { IsInt, Min, Max, IsString, IsNotEmpty, Length, IsIn, IsOptional } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
 import { InventoryStatusEnum, ProductCategoryEnum } from 'src/products/models/product.model'
 
-export class CreateProductDto {
+export class UpdateProductDto {
+  @IsOptional()
   @IsInt()
   @Min(10)
   @Max(50000)
   @ApiProperty({ type: String, description: 'price must be in range from 10 to 50,000' })
-  price: number
-
+  price?: number
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
     type: String,
     description: 'name',
   })
-  name: string
-
+  name?: string
+  @IsOptional()
   @IsString()
   @IsIn(['photo album', 'cards', 'mug', 'calendar', 'canvas print', 'photo gift'])
   @ApiProperty({
@@ -24,8 +25,8 @@ export class CreateProductDto {
     description: 'role can be :photo album,cards,mug,calendar,canvas print,photo gift',
     enum: ['photo album', 'cards', 'mug', 'calendar', 'canvas print', 'photo gift'],
   })
-  category: ProductCategoryEnum
-
+  category?: ProductCategoryEnum
+  @IsOptional()
   @IsString()
   @IsIn(['ready', 'outOfStock', 'stopSales'])
   @ApiProperty({
@@ -33,13 +34,13 @@ export class CreateProductDto {
     description: 'status can be : ready, outOfStock, stopSales',
     enum: ['ready', 'outOfStock', 'stopSales'],
   })
-  inventoryStatus: InventoryStatusEnum
-
+  inventoryStatus?: InventoryStatusEnum
+  @IsOptional()
   @IsString()
   @Length(8, 256)
   @ApiProperty({
     type: String,
     description: 'thumbnailUrl need to be an url',
   })
-  thumbnailUrl: string
+  thumbnailUrl?: string
 }

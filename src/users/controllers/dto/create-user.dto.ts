@@ -29,12 +29,6 @@ export class CreateUserDto {
 
   @IsString()
   @IsIn(['admin', 'user'])
-  //   @ApiProperty({
-  //     type: String,
-  //     description: 'role it can be admin or user'
-  //     @ApiProperty({ enum: ['Admin', 'Moderator', 'User']})
-  // ,
-  //   })
   @ApiProperty({
     type: String,
     description: 'role it can be admin or user',
@@ -43,6 +37,7 @@ export class CreateUserDto {
   role: RolesEnum
 
   @IsString()
+  @IsNotEmpty()
   @IsNotEmpty()
   @ApiProperty({
     type: String,
