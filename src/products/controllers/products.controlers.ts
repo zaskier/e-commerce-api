@@ -26,6 +26,7 @@ import {
 } from '@nestjs/swagger'
 import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 @Controller('products')
 @ApiTags('products')
 export class ProductsController {
@@ -42,17 +43,17 @@ export class ProductsController {
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
   })
-  //  @ApiBearerAuth() todo validate
+  @ApiBearerAuth()
   @ApiBody({ type: CreateProductDto })
   addProduct(@Headers('Authorization') jwtPayload: string, @Body() createProductDto: CreateProductDto) {
     return new Promise<any>((resolve, reject) => {
       this.productService
         .insertPoduct(createProductDto, jwtPayload)
-        .then(review => {
-          resolve(review)
+        .then(product => {
+          resolve(product)
         })
         .catch(error => {
-          reject(new ConflictException(`Review cannot be added, error: ${JSON.stringify(error)}`))
+          reject(new ConflictException(`Product cannot be added, error: ${JSON.stringify(error)}`))
         })
     })
   }
@@ -76,39 +77,49 @@ export class ProductsController {
         })
     })
   }
-  // @Patch(':id')
-  // @UseGuards(JwtAuthAdminGuard)
-  // @ApiUnauthorizedResponse({
-  //   type: UnauthorizedException,
-  //   description: 'lacks valid authentication credentials for the requested resource',
-  // })
-  // @ApiResponse({
-  //   status: 403,
-  //   description: `Forbidden: How do you fix you don't have permission to access this resource?`,
-  // })
-  // // @ApiBody({ type: ReviewPost }) //todoadd
-  // updateProduct(
-  //   @Param('id') prodId: string,
-  //   @Body('title') prodTitle: string,
-  //   @Body('description') prodDescription: string,
-  //   @Body('price') prodPrice: number,
-  // ) {
-  //   this.productService.updateSingleProduct(prodId, prodTitle, prodDescription, prodPrice)
-  //   return null
-  // }
 
-  // @Delete(':id')
-  // @UseGuards(JwtAuthAdminGuard)
-  // @ApiUnauthorizedResponse({
-  //   type: UnauthorizedException,
-  //   description: 'lacks valid authentication credentials for the requested resource',
-  // })
-  // @ApiResponse({
-  //   status: 403,
-  //   description: `Forbidden: How do you fix you don't have permission to access this resource?`,
-  // })
-  // removeProduct(@Param('id') prodId: string) {
-  //   this.productService.deleteProduct(prodId)
-  //   return { message: 'item was removed' }
-  // }
+  @Patch(':id')
+  @UseGuards(JwtAuthAdminGuard)
+  @ApiBody({ type: UpdateProductDto })
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Product was edited' })
+  @ApiResponse({
+    status: 403,
+    description: `Forbidden: How do you fix you don't have permission to access this resource?`,
+  })
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+    description: 'lacks valid authentication credentials for the requested resource',
+  })
+  @ApiBody({ type: UpdateProductDto })
+  async updateComment(
+    @Param('id', ParseIntPipe) id: number,
+    @Headers('Authorization') jwtPayload: string,
+    @Body() updateProductDto: UpdateProductDto,
+  ) {
+    return new Promise<any>(async (resolve, reject) => {
+      this.productService
+        .updateProduct(id, jwtPayload, updateProductDto)
+        .then(product => {
+          resolve(product)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthAdminGuard)
+  @ApiUnauthorizedResponse({
+    type: UnauthorizedException,
+    description: 'lacks valid authentication credentials for the requested resource',
+  })
+  @ApiResponse({
+    status: 403,
+    description: `Forbidden: you don't have permission to perform thius operation`,
+  })
+  removeProduct(@Param('id', ParseIntPipe) id: number, @Headers('Authorization') jwtPayload: string) {
+    return this.productService.deleteProduct(id, jwtPayload)
+  }
 }
