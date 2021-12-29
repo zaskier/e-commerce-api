@@ -2,10 +2,13 @@ import { IsInt, Min, IsOptional, Max, IsString, IsNotEmpty } from 'class-validat
 import { ApiProperty } from '@nestjs/swagger'
 
 export class UpdateReviewDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ type: String, description: 'review content' })
   review?: string
+
+  @IsOptional()
   @IsInt()
   @IsNotEmpty()
   @Min(1)
