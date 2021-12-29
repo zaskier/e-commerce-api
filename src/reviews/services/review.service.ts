@@ -55,15 +55,20 @@ export class ReviewService {
     updateReviewDto.editedAt = new Date()
     updateReviewDto.email = jwt_decode(jwtPayload.replace('Bearer ', ''))['name']
     let authorValidagtion = this.reviewPostRepository.findOne({ id: id })
-    Promise.all([authorValidagtion, updateReviewDto.email, updateReviewDto.editedAt]).then(values => {
-      if (!!authorValidagtion['email'] && values[0].email == updateReviewDto.email) {
-        this.reviewPostRepository.update(id, updateReviewDto)
-        this.logger.log(`Review ${JSON.stringify({ review: updateReviewDto })} was added by ${updateReviewDto.email} `)
-      } else {
-        this.logger.warn(
-          `Unathorised user ${updateReviewDto.email} tried to edit review through api for another user${values[0].email}`,
-        )
-      }
+
+    return new Promise<any>(async (resolve, reject) => {
+      Promise.all([authorValidagtion, updateReviewDto.email, updateReviewDto.editedAt]).then(values => {
+        if (!!values[0].email && values[0].email == updateReviewDto.email) {
+          updateReviewDto.rating = !!updateReviewDto.rating ? updateReviewDto.rating : values[0].rating
+          updateReviewDto.review = !!updateReviewDto.review ? updateReviewDto.review : values[0].review
+          resolve(this.reviewPostRepository.update(id, updateReviewDto))
+          this.logger.log(
+            `Review ${JSON.stringify({ review: updateReviewDto })} was added by ${updateReviewDto.email} `,
+          )
+        } else {
+          reject(`Unathorised user ${updateReviewDto.email} tried to edit review through api for another user`)
+        }
+      })
     })
   }
 

@@ -84,12 +84,21 @@ export class ReviewController {
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
   })
-  async updateComment(
+  updateReview(
     @Param('id', ParseIntPipe) id: number,
     @Headers('Authorization') jwtPayload: string,
     @Body() updateReviewDto: UpdateReviewDto,
   ) {
-    return this.reviewService.updateComment(+id, jwtPayload, updateReviewDto)
+    return new Promise<any>(async (resolve, reject) => {
+      this.reviewService
+        .updateComment(id, jwtPayload, updateReviewDto)
+        .then(review => {
+          resolve(review)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
   }
 
   @Delete(':id')
