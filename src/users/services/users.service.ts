@@ -21,7 +21,7 @@ export class UsersService {
   }
   private logger = new Logger('UserServie')
 
-  async createNewUser(createUserDto: CreateUserDto) {
+  async createNewUser(createUserDto: CreateUserDto): Promise<User> {
     createUserDto.email = createUserDto.email.toLowerCase()
 
     createUserDto.name = upperCamelCase(createUserDto.name)
@@ -31,7 +31,7 @@ export class UsersService {
     return await this.userRepository.save(createUserDto)
   }
 
-  findAllUsers() {
+  findAllUsers(): Promise<User[]> {
     return this.userRepository.find()
   }
 
@@ -56,7 +56,7 @@ export class UsersService {
     })
   }
 
-  async updateUser(id: number, updateUserDto: UpdateUserDto) {
+  async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     return new Promise<any>(async (resolve, reject) => {
       if (updateUserDto.email) {
         updateUserDto.email = updateUserDto.email.toLowerCase()
