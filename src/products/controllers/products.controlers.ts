@@ -27,6 +27,7 @@ import {
 import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
+import { Product } from '../models/product.entity'
 @Controller('products')
 @ApiTags('products')
 export class ProductsController {
@@ -45,7 +46,7 @@ export class ProductsController {
   })
   @ApiBearerAuth()
   @ApiBody({ type: CreateProductDto })
-  addProduct(@Headers('Authorization') jwtPayload: string, @Body() createProductDto: CreateProductDto) {
+  addProduct(@Headers('Authorization') jwtPayload: string, @Body() createProductDto: CreateProductDto): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.productService
         .insertPoduct(createProductDto, jwtPayload)
@@ -53,7 +54,13 @@ export class ProductsController {
           resolve(product)
         })
         .catch(error => {
-          reject(new ConflictException(`Product cannot be added, error: ${JSON.stringify(error)}`))
+          if (error.code === '23505') {
+            reject(new ConflictException('User cannot be instatiated, there is user email adress conflict'))
+          } else {
+            reject(
+              `Product cannot be instatiated, ${JSON.stringify(createProductDto)}, error: ${JSON.stringify(error)}`,
+            )
+          }
         })
     })
   }
@@ -96,7 +103,7 @@ export class ProductsController {
     @Param('id', ParseIntPipe) id: number,
     @Headers('Authorization') jwtPayload: string,
     @Body() updateProductDto: UpdateProductDto,
-  ) {
+  ): Promise<Product> {
     return new Promise<any>(async (resolve, reject) => {
       this.productService
         .updateProduct(id, jwtPayload, updateProductDto)
@@ -104,7 +111,17 @@ export class ProductsController {
           resolve(product)
         })
         .catch(error => {
-          reject(error)
+          if (error.code === '23505') {
+            reject(
+              new ConflictException(
+                `Product cannot be instatiated, there is product name conflict'${JSON.stringify(updateProductDto)}`,
+              ),
+            )
+          } else {
+            reject(
+              `Product cannot be instatiated, ${JSON.stringify(updateProductDto)}, error: ${JSON.stringify(error)}`,
+            )
+          }
         })
     })
   }
