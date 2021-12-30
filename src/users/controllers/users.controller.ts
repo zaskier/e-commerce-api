@@ -50,7 +50,7 @@ export class UsersController {
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
   })
-  async createUser(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.usersService
         .createNewUser(createUserDto)
@@ -59,7 +59,9 @@ export class UsersController {
           resolve(user)
         })
         .catch(error => {
-          delete createUserDto['password']
+          if (createUserDto.password) {
+            delete createUserDto['password']
+          }
           if (error.code === '23505') {
             this.logger.warn(
               `User cannot be instatiated, there is user email adress conflict'${JSON.stringify(createUserDto)}`,
@@ -75,7 +77,7 @@ export class UsersController {
   @Get()
   @ApiOkResponse({ description: 'All users were listed' })
   @ApiUnauthorizedResponse({ type: UnauthorizedException })
-  findAll() {
+  findAll(): Promise<any[]> {
     return this.usersService.findAllUsers()
   }
 
@@ -102,7 +104,7 @@ export class UsersController {
     type: UnauthorizedException,
     description: 'lacks valid authentication credentials for the requested resource',
   })
-  update(@Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id', ParseIntPipe) id: string, @Body() updateUserDto: UpdateUserDto): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.usersService
         .updateUser(+id, updateUserDto)
@@ -114,9 +116,16 @@ export class UsersController {
         })
         .catch(error => {
           if (updateUserDto.password) {
-            updateUserDto.password = ''
+            delete updateUserDto['password']
           }
-          reject(new ConflictException(`User cannot be updated, error: ${JSON.stringify(error)}`))
+          if (error.code === '23505') {
+            this.logger.warn(
+              `User cannot be instatiated, there is user email adress conflict'${JSON.stringify(updateUserDto)}`,
+            )
+            reject(new ConflictException('User cannot be instatiated, there is user email adress conflict'))
+          } else {
+            reject(`User cannot be instatiated, ${JSON.stringify(updateUserDto)}, error: ${JSON.stringify(error)}`)
+          }
         })
     })
   }
