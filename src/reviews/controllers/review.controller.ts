@@ -5,13 +5,13 @@ import {
   Get,
   Param,
   Post,
-  Put,
   ParseIntPipe,
   UseGuards,
   UnauthorizedException,
   Headers,
   ConflictException,
   Logger,
+  Patch,
 } from '@nestjs/common'
 import { ReviewService } from '../services/review.service'
 import { ReviewPost } from '../models/review.model'
@@ -41,7 +41,7 @@ export class ReviewController {
     description: 'lacks valid authentication credentials for the requested resource',
   })
   @ApiCreatedResponse({ description: 'Review was posted' })
-  create(@Headers('Authorization') jwtPayload: string, @Body() createReviewDto: CreateReviewDto) {
+  create(@Headers('Authorization') jwtPayload: string, @Body() createReviewDto: CreateReviewDto): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.reviewService
         .create(createReviewDto, jwtPayload)
@@ -75,7 +75,7 @@ export class ReviewController {
     })
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBody({ type: UpdateReviewDto })
   @ApiBearerAuth()
