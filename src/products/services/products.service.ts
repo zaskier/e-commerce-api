@@ -14,7 +14,7 @@ export class ProductService {
     private readonly productRepository: Repository<Product>,
   ) {}
   private logger = new Logger('ProductServie')
-  insertPoduct(createProductDto: CreateProductDto, jwtPayload: string) {
+  insertPoduct(createProductDto: CreateProductDto, jwtPayload: string): Promise<Product> {
     this.logger.log(
       `Product : ${JSON.stringify({ product: createProductDto })}  was added by ${
         jwt_decode(jwtPayload.replace('Bearer ', ''))['name']
@@ -23,11 +23,11 @@ export class ProductService {
     return this.productRepository.save(createProductDto)
   }
 
-  getProducts() {
+  getProducts(): Promise<Product[]> {
     return this.productRepository.find()
   }
 
-  async getSingleProduct(id: number) {
+  async getSingleProduct(id: number): Promise<Product> {
     let product = null
     return new Promise<any>(async (resolve, reject) => {
       try {
@@ -43,7 +43,7 @@ export class ProductService {
     })
   }
 
-  updateProduct(id: number, jwtPayload: string, updateProductDto: UpdateProductDto) {
+  updateProduct(id: number, jwtPayload: string, updateProductDto: UpdateProductDto): Promise<Product> {
     return new Promise<any>(async (resolve, reject) => {
       this.productRepository.findOne(id).then(value => {
         if (typeof value == 'undefined') {
