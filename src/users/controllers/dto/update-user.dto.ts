@@ -45,7 +45,6 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  @IsIn(['admin', 'user'])
   @ApiProperty({
     type: String,
     description: 'email',
