@@ -16,7 +16,7 @@ export class ReviewService {
   ) {}
   private logger = new Logger('ReviewServie')
 
-  create(createReviewDto: CreateReviewDto, jwtPayload: string) {
+  create(createReviewDto: CreateReviewDto, jwtPayload: string): Promise<Review> {
     createReviewDto.email = jwt_decode(jwtPayload.replace('Bearer ', ''))['name']
     this.logger.log(
       `Rewiew : ${JSON.stringify({ review: createReviewDto })}  was added by ${
@@ -26,7 +26,7 @@ export class ReviewService {
     return this.reviewPostRepository.save(createReviewDto)
   }
 
-  findAllPosts() {
+  findAllPosts(): Promise<Review[]> {
     return this.reviewPostRepository.find()
   }
 
@@ -51,7 +51,7 @@ export class ReviewService {
     })
   }
 
-  updateComment(id: number, jwtPayload: string, updateReviewDto: UpdateReviewDto) {
+  updateComment(id: number, jwtPayload: string, updateReviewDto: UpdateReviewDto): Promise<Review> {
     updateReviewDto.editedAt = new Date()
     updateReviewDto.email = jwt_decode(jwtPayload.replace('Bearer ', ''))['name']
     let authorValidagtion = this.reviewPostRepository.findOne({ id: id })
