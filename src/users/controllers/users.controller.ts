@@ -10,12 +10,10 @@ import {
   UseGuards,
   UnauthorizedException,
   Headers,
-  HttpStatus,
-  ForbiddenException,
   ConflictException,
-  InternalServerErrorException,
   Logger,
-  HttpException,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { UsersService } from '../services/users.service'
@@ -74,6 +72,7 @@ export class UsersController {
     })
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   @ApiOkResponse({ description: 'All users were listed' })
   @ApiUnauthorizedResponse({ type: UnauthorizedException })
@@ -81,6 +80,7 @@ export class UsersController {
     return this.usersService.findAllUsers()
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   @ApiUnauthorizedResponse({ type: UnauthorizedException })
   @ApiOkResponse({ description: 'User was found' })

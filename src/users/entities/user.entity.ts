@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Index } from 'typeorm'
 import { RolesEnum } from '../models/user.model'
-import * as bcrypt from 'bcrypt'
+import { Exclude } from 'class-transformer'
 
 @Entity('user')
 export class User extends BaseEntity {
@@ -21,6 +21,7 @@ export class User extends BaseEntity {
   phoneNumber: string
 
   @Column()
+  @Exclude()
   password: string
 
   @Column({
