@@ -22,7 +22,7 @@ import { ProductModule } from './products/product.module'
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
-      synchronize: true, //todo validate with according to cooding standards for production enviorment
+      synchronize: false,
     }),
     ProductModule,
     ReviewModule,
