@@ -4,6 +4,7 @@
 /keys
 .env
 /nestjs-dockerized
+ormconfig.json
 
 # Logs
 logs
@@ -36,3 +37,4 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
