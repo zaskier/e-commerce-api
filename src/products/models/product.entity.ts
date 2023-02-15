@@ -34,4 +34,8 @@ export class Product extends BaseEntity {
   @Column()
   @IsUrl()
   thumbnailUrl: string
+
+  @Column({ type: 'varchar', nullable: true })
+  @IsUrl()
+  thumbnail64: string
 }

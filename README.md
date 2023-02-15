@@ -22,6 +22,29 @@ SECRET=  //for main.ts
 JWT_SECRET= {} // for JWT token
 ```
 
+- add "ormconfig.json" file in main directory and write it
+
+```
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "",
+    "password": "",
+    "database": "",
+    "synchronize": false,
+    "logging": true,
+    "entities": ["src/**/*.entity.ts"],
+    "migrations": ["database/migrations/**/*.ts"],
+    "subscribers": ["migrations/**/*.ts"],
+    "migrationsTableName": "migration",
+    "cli": {
+      "migrationsDir": "./database/migrations"
+    },
+    "ssl": false
+  }
+```
+
 ## to Build Docker image:
 
 ```
@@ -48,4 +71,16 @@ JWT_SECRET= {} // for JWT token
 
 ```
  - npm run test:e2e:watch
+```
+
+## to generate typeorm migration
+
+```
+ - npx ts-node node_modules/.bin/typeorm migration:generate -n {message}
+```
+
+## to run typeorm migration
+
+```
+ - npx ts-node node_modules/.bin/typeorm migration:run
 ```
