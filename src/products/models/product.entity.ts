@@ -1,7 +1,7 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, Index } from 'typeorm'
 import { InventoryStatusEnum, ProductCategoryEnum } from '../models/product.model'
 
-import { IsString, IsNumber, MaxLength, Min, IsUrl } from 'class-validator'
+import { IsString, IsNumber, Min, IsUrl } from 'class-validator'
 
 @Entity('product')
 export class Product extends BaseEntity {

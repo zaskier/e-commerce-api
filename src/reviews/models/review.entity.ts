@@ -1,5 +1,5 @@
-import { Column, Index, Entity, PrimaryGeneratedColumn, BaseEntity } from 'typeorm'
-
+import { Product } from 'src/products/models/product.entity'
+import { Column, Index, Entity, PrimaryGeneratedColumn, BaseEntity, JoinColumn, ManyToOne } from 'typeorm'
 @Entity('review')
 export class Review extends BaseEntity {
   @Index({ unique: true })
@@ -20,4 +20,11 @@ export class Review extends BaseEntity {
 
   @Column()
   email: string
+
+  @Column()
+  product_id: number
+
+  @ManyToOne(type => Product, product => product.productId)
+  @JoinColumn({ name: 'product_id', referencedColumnName: 'productId' })
+  product: Product
 }

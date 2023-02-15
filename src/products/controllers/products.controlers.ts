@@ -9,21 +9,12 @@ import {
   UseGuards,
   UnauthorizedException,
   Logger,
-  Put,
   ParseIntPipe,
   Headers,
   ConflictException,
 } from '@nestjs/common'
 import { ProductService } from '../services/products.service'
-import {
-  ApiUnauthorizedResponse,
-  ApiResponse,
-  ApiTags,
-  ApiBody,
-  ApiBearerAuth,
-  ApiCreatedResponse,
-  ApiOkResponse,
-} from '@nestjs/swagger'
+import { ApiUnauthorizedResponse, ApiResponse, ApiTags, ApiBody, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger'
 import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
@@ -55,7 +46,7 @@ export class ProductsController {
         })
         .catch(error => {
           if (error.code === '23505') {
-            reject(new ConflictException('User cannot be instatiated, there is user email adress conflict'))
+            reject(new ConflictException('Product cannot be instatiated, there is user name conflict'))
           } else {
             reject(
               `Product cannot be instatiated, ${JSON.stringify(createProductDto)}, error: ${JSON.stringify(error)}`,

@@ -13,4 +13,5 @@ export class CreateReviewDto {
   @ApiProperty({ type: String, description: 'rating from 1 to 5 stars' })
   rating: number
   email: string
+  product_id: number
 }

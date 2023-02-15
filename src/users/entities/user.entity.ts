@@ -18,7 +18,7 @@ export class User extends BaseEntity {
   surname: string
 
   @Column()
-  phoneNumber: string
+  phone_number: string
 
   @Column()
   @Exclude()

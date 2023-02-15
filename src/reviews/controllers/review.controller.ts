@@ -14,7 +14,6 @@ import {
   Patch,
 } from '@nestjs/common'
 import { ReviewService } from '../services/review.service'
-import { ReviewPost } from '../models/review.model'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import {
   ApiBody,

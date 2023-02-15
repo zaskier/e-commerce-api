@@ -43,7 +43,7 @@ export class CreateUserDto {
     type: String,
     description: 'phone number',
   })
-  phoneNumber: string
+  phone_number: string
 
   @IsString()
   @Length(8, 256)

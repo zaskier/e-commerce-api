@@ -1,12 +1,10 @@
-import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateReviewDto } from '../controllers/dto/create-review.dto'
 import { UpdateReviewDto } from '../controllers/dto/update.review.dto'
 import { Review } from '../models/review.entity'
-import { ReviewPost } from '../models/review.model'
 import jwt_decode from 'jwt-decode'
-import { response } from 'express'
 
 @Injectable()
 export class ReviewService {
@@ -54,7 +52,7 @@ export class ReviewService {
   updateComment(id: number, jwtPayload: string, updateReviewDto: UpdateReviewDto): Promise<Review> {
     updateReviewDto.editedAt = new Date()
     updateReviewDto.email = jwt_decode(jwtPayload.replace('Bearer ', ''))['name']
-    let authorValidagtion = this.reviewPostRepository.findOne({ id: id })
+    const authorValidagtion = this.reviewPostRepository.findOne({ id: id })
 
     return new Promise<any>(async (resolve, reject) => {
       Promise.all([authorValidagtion, updateReviewDto.email, updateReviewDto.editedAt]).then(values => {

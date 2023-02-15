@@ -1,11 +1,10 @@
-import { ConflictException, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { ConflictException, Injectable, Logger } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { CreateProductDto } from '../controllers/dto/create-product.dto'
 import { Product } from '../models/product.entity'
 import jwt_decode from 'jwt-decode'
 import { UpdateProductDto } from '../controllers/dto/update-product.dto'
-import { rejects } from 'assert'
 
 @Injectable()
 export class ProductService {

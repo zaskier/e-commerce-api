@@ -15,7 +15,6 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
 } from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm'
 import { UsersService } from '../services/users.service'
 import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
@@ -30,7 +29,6 @@ import {
 } from '@nestjs/swagger'
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
 import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
-import { User } from '../entities/user.entity'
 
 @Controller('users')
 @ApiTags('users')
@@ -66,6 +64,9 @@ export class UsersController {
             )
             reject(new ConflictException('User cannot be instatiated, there is user email adress conflict'))
           } else {
+            this.logger.error(
+              `User cannot be instatiated, there is user email adress conflict'${JSON.stringify(createUserDto)}`,
+            )
             reject(`User cannot be instatiated, ${JSON.stringify(createUserDto)}, error: ${JSON.stringify(error)}`)
           }
         })
