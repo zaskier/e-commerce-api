@@ -16,7 +16,7 @@ export class UsersService {
     private readonly userRepository: UserRepository,
   ) {}
   async logInUser(email: string): Promise<User | undefined> {
-    let users = this.userRepository.find()
+    const users = this.userRepository.find()
     return (await users).find(user => user.email === email)
   }
   private logger = new Logger('UserServie')
@@ -26,25 +26,48 @@ export class UsersService {
 
     createUserDto.name = upperCamelCase(createUserDto.name)
     createUserDto.surname = upperCamelCase(createUserDto.surname)
-    let userSalt: string = await bcrypt.genSalt(12)
+    const userSalt: string = await bcrypt.genSalt(12)
     createUserDto.password = await this.hashPassword(createUserDto.password, userSalt)
     return await this.userRepository.save(createUserDto)
   }
 
-  findAllUsers(): Promise<User[]> {
-    return this.userRepository.find()
+  async findAllUsers(): Promise<User[]> {
+    // return this.userRepository.find()
+
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .select([
+        'user.id',
+        'user.name',
+        'user.email',
+        'user.surname',
+        'user.phone_number',
+        'user.role',
+        'user.createdAt',
+        'user.editedAt',
+      ])
+      .getMany()
   }
 
   async findOneUser(id: number): Promise<User> {
     let user = null
     return new Promise<any>(async (resolve, reject) => {
       try {
-        user = await this.userRepository.findOne({
-          where: {
-            id,
-          },
-        })
-        delete user['password']
+        user = await this.userRepository
+          .createQueryBuilder('user')
+          .select([
+            'user.id',
+            'user.name',
+            'user.email',
+            'user.surname',
+            'user.phone_number',
+            'user.role',
+            'user.createdAt',
+            'user.editedAt',
+          ])
+          .where('user.id = :id', { id: id })
+          .getOne()
+
         if (user != null) {
           resolve(user)
         } else {
@@ -68,10 +91,10 @@ export class UsersService {
         updateUserDto.surname = upperCamelCase(updateUserDto.surname)
       }
       if (updateUserDto.password) {
-        let userSalt: string = await bcrypt.genSalt(12)
+        const userSalt: string = await bcrypt.genSalt(12)
         updateUserDto.password = await this.hashPassword(updateUserDto.password, userSalt)
       }
-      let updateEditedAt: Date = new Date()
+      const updateEditedAt: Date = new Date()
       updateUserDto.editedAt = updateEditedAt
       this.userRepository.findOne(id).then(value => {
         if (typeof value == 'undefined') {
