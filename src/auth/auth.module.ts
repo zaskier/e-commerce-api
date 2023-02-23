@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
-import { UsersModule } from 'src/users/users.module'
+import { UsersModule } from '../users/users.module'
 import { AuthController } from './controllers/authorisation.controller'
 import { JwtStrategy } from './jwt.strategy'
 import { LocalStrategy } from './local.strategy'
 import { AuthService } from './services/auth.service'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 
 @Module({

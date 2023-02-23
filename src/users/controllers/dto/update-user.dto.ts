@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types'
 import { IsEmail, IsOptional, Length, IsString, IsNotEmpty } from 'class-validator'
-import { RolesEnum } from 'src/users/models/user.model'
+import { RolesEnum } from '../../models/user.model'
+
 import { CreateUserDto } from './create-user.dto'
 import { ApiProperty } from '@nestjs/swagger'
 

@@ -6,8 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { UserRepository } from '../models/user.repository'
 import jwt_decode from 'jwt-decode'
 import { User } from '../entities/user.entity'
-
-const upperCamelCase = require('uppercamelcase')
+import upperCamelCase from 'uppercamelcase'
 
 @Injectable()
 export class UsersService {
@@ -32,8 +31,6 @@ export class UsersService {
   }
 
   async findAllUsers(): Promise<User[]> {
-    // return this.userRepository.find()
-
     return await this.userRepository
       .createQueryBuilder('user')
       .select([

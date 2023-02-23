@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-import { UsersService } from 'src/users/services/users.service'
+import { UsersService } from '../../users/services/users.service'
 
 @Injectable()
 export class AuthService {
@@ -13,6 +13,7 @@ export class AuthService {
 
     password = await this.usersService.hashPassword(password, String(user.password.match(saltRegex)))
     if (user && user.password === password) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, email, ...rest } = user
       return user
     }

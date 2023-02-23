@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body, Request, UseGuards, UnauthorizedException, HttpCode } from '@nestjs/common'
 
 import { ApiUnauthorizedResponse, ApiOkResponse, ApiBody, ApiTags } from '@nestjs/swagger'
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard'
-import { JwtAuthAdminGuard } from '../guards/jwt-auth-admin.guard'
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard'
 import { LocalAuthGuard } from '../guards/local-auth.guard'
 import { AuthService } from '../services/auth.service'
 import { AuthoriseUserDto } from './dto/authorise-user.dto'
