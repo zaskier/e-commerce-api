@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common'
 import { ProductService } from '../services/products.service'
 import { ApiUnauthorizedResponse, ApiResponse, ApiTags, ApiBody, ApiBearerAuth, ApiOkResponse } from '@nestjs/swagger'
-import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
+import { JwtAuthAdminGuard } from '../../auth/guards/jwt-auth-admin.guard'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { Product } from '../models/product.entity'

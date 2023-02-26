@@ -1,6 +1,6 @@
 import { IsInt, Min, Max, IsString, IsNotEmpty, Length, IsIn } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
-import { InventoryStatusEnum, ProductCategoryEnum } from 'src/products/models/product.model'
+import { InventoryStatusEnum, ProductCategoryEnum } from '../../models/product.model'
 
 export class CreateProductDto {
   @IsInt()

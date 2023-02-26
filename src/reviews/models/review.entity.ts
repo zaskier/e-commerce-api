@@ -1,4 +1,5 @@
-import { Product } from 'src/products/models/product.entity'
+import { Product } from '../../products/models/product.entity'
+
 import { Column, Index, Entity, PrimaryGeneratedColumn, BaseEntity, JoinColumn, ManyToOne } from 'typeorm'
 @Entity('review')
 export class Review extends BaseEntity {
@@ -24,6 +25,7 @@ export class Review extends BaseEntity {
   @Column()
   product_id: number
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   @ManyToOne(type => Product, product => product.productId)
   @JoinColumn({ name: 'product_id', referencedColumnName: 'productId' })
   product: Product

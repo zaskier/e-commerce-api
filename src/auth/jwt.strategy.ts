@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import { Strategy, ExtractJwt } from 'passport-jwt'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 
 @Injectable()
