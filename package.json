@@ -25,7 +25,6 @@
     "migration:generate": "ts-node ./node_modules/typeorm/cli.js migration:generate --n create-users-table",
     "migrate:down": "ts-node ./node_modules/typeorm/cli.js migration:revert",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js"
-
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -40,6 +39,8 @@
     "@types/npm": "^7.19.0",
     "@types/passport-local": "^1.0.34",
     "bcrypt": "^5.0.1",
+    "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.2",
     "express-session": "^1.17.2",
     "jwt-decode": "^3.1.2",
     "mapped-types": "^0.0.1",
