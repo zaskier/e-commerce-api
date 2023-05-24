@@ -33,7 +33,6 @@ import { JwtAuthAdminGuard } from 'src/auth/guards/jwt-auth-admin.guard'
 @Controller('users')
 @ApiTags('users')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
 export class UsersController {
   private logger = new Logger('UsersController')
 
@@ -73,6 +72,7 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   @ApiOkResponse({ description: 'All users were listed' })
@@ -81,6 +81,7 @@ export class UsersController {
     return this.usersService.findAllUsers()
   }
 
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(ClassSerializerInterceptor)
   @Get(':id')
   @ApiUnauthorizedResponse({ type: UnauthorizedException })
@@ -98,6 +99,7 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   @ApiBody({ type: UpdateUserDto })
   @ApiOkResponse({ description: 'User was updated' })
@@ -131,6 +133,7 @@ export class UsersController {
     })
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @UseGuards(JwtAuthAdminGuard)
   @ApiOkResponse({ description: 'User was user deleted' })
